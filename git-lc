@@ -1,0 +1,65 @@
+#!/usr/bin/python
+
+import subprocess
+import sys
+
+def lazy_checkout(inputBranchName):
+    command = ["git", "branch"]
+
+    process = subprocess.Popen(command, 
+        stdout = subprocess.PIPE, 
+        stderr = subprocess.PIPE)
+    
+    out, err  = process.communicate()
+    
+    if (err):
+        print err
+        exit()
+
+    gitBranches = out.split('\n')
+
+    matchedBranchNames = []
+
+    for branch in gitBranches:
+        branch = branch.replace('*', '').strip()
+
+        if not len(branch) > 0: continue
+
+        if inputBranchName not in branch: continue
+        
+        matchedBranchNames.append(branch)
+
+    if len(matchedBranchNames) == 1:
+        branchSelection = matchedBranchNames[0]
+    else:
+        branchSelection = matchedBranchNames[display_available_branches(matchedBranchNames)]
+
+    subprocess.call(["git", "checkout", branchSelection])
+
+def display_available_branches(matchedBranchNames):
+    selectionRange = range(len(matchedBranchNames))
+
+    for i in selectionRange:
+        selectionCounter = i + 1
+        print `selectionCounter` + ") " + matchedBranchNames[i]
+    
+    selection = int_or_null(raw_input("Given branch name matches several available branches. Please select one: "))
+
+    if selection is None or selection not in selectionRange:
+        selection = display_available_branches(matchedBranchNames)
+
+    return selection
+
+def int_or_null(input):
+    try:
+        return int(input)
+    except ValueError:
+        return None
+
+if len(sys.argv) < 2:
+    print "Invalid number of args"
+    exit()
+
+inputBranchName = sys.argv[1]
+
+lazy_checkout(inputBranchName)
