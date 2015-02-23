@@ -31,7 +31,8 @@ def lazy_checkout(input_branch_name):
     if len(matched_branch_names) == 1:
         branch_selection = matched_branch_names[0]
     else:
-        branch_selection = matched_branch_names[display_available_branches(matched_branch_names)]
+        selection = display_available_branches(matched_branch_names) - 1
+        branch_selection = matched_branch_names[selection]
 
     subprocess.call(["git", "checkout", branch_selection])
 
