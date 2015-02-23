@@ -43,7 +43,7 @@ def display_available_branches(matchedBranchNames):
         selection_counter = i + 1
         print `selection_counter` + ") " + matchedBranchNames[i]
 
-    selection = int_or_null(raw_input("Given branch name matches several available branches. Please select one: "))
+    selection = int_or_none(raw_input("Given branch name matches several available branches. Please select one: "))
 
     if selection is None or selection not in selection_range:
         selection = display_available_branches(matchedBranchNames)
@@ -51,9 +51,9 @@ def display_available_branches(matchedBranchNames):
     return selection
 
 
-def int_or_null(input):
+def int_or_none(input_string):
     try:
-        return int(input)
+        return int(input_string)
     except ValueError:
         return None
 
