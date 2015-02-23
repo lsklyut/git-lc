@@ -3,58 +3,62 @@
 import subprocess
 import sys
 
-def lazy_checkout(inputBranchName):
+
+def lazy_checkout(input_branch_name):
     command = ["git", "branch"]
 
-    process = subprocess.Popen(command, 
-        stdout = subprocess.PIPE, 
-        stderr = subprocess.PIPE)
-    
-    out, err  = process.communicate()
-    
+    process = subprocess.Popen(command,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+
+    out, err = process.communicate()
+
     if (err):
         print err
         exit()
 
-    gitBranches = out.split('\n')
+    git_branches = out.split('\n')
 
-    matchedBranchNames = []
+    matched_branch_names = []
 
-    for branch in gitBranches:
+    for branch in git_branches:
         branch = branch.replace('*', '').strip()
 
         if not len(branch) > 0: continue
 
-        if inputBranchName not in branch: continue
-        
-        matchedBranchNames.append(branch)
+        if input_branch_name not in branch: continue
 
-    if len(matchedBranchNames) == 1:
-        branchSelection = matchedBranchNames[0]
+        matched_branch_names.append(branch)
+
+    if len(matched_branch_names) == 1:
+        branch_selection = matched_branch_names[0]
     else:
-        branchSelection = matchedBranchNames[display_available_branches(matchedBranchNames)]
+        branch_selection = matched_branch_names[display_available_branches(matched_branch_names)]
 
-    subprocess.call(["git", "checkout", branchSelection])
+    subprocess.call(["git", "checkout", branch_selection])
+
 
 def display_available_branches(matchedBranchNames):
-    selectionRange = range(len(matchedBranchNames))
+    selection_range = range(len(matchedBranchNames))
 
-    for i in selectionRange:
-        selectionCounter = i + 1
-        print `selectionCounter` + ") " + matchedBranchNames[i]
-    
+    for i in selection_range:
+        selection_counter = i + 1
+        print `selection_counter` + ") " + matchedBranchNames[i]
+
     selection = int_or_null(raw_input("Given branch name matches several available branches. Please select one: "))
 
-    if selection is None or selection not in selectionRange:
+    if selection is None or selection not in selection_range:
         selection = display_available_branches(matchedBranchNames)
 
     return selection
+
 
 def int_or_null(input):
     try:
         return int(input)
     except ValueError:
         return None
+
 
 if len(sys.argv) < 2:
     print "Invalid number of args"
