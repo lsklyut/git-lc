@@ -28,6 +28,10 @@ def lazy_checkout(input_branch_name):
 
         matched_branch_names.append(branch)
 
+    if not matched_branch_names:
+        print "Your input does not match any available branches"
+        exit()
+
     if len(matched_branch_names) == 1:
         branch_selection = matched_branch_names[0]
     else:
