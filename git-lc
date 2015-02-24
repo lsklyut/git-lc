@@ -22,9 +22,11 @@ def lazy_checkout(input_branch_name):
     for branch in git_branches:
         branch = branch.replace('*', '').strip()
 
-        if not len(branch) > 0: continue
+        if not len(branch) > 0:
+            continue
 
-        if input_branch_name not in branch: continue
+        if input_branch_name not in branch:
+            continue
 
         matched_branch_names.append(branch)
 
