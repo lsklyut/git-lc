@@ -38,14 +38,13 @@ def lazy_checkout(input_branch_name):
 
 
 def display_matched_branches(selection_range, matched_branch_names):
-    for i in selection_range:
-        selection_counter = i + 1
-        print `selection_counter` + ") " + matched_branch_names[i]
+    for selection_number in selection_range:
+        print `selection_number` + ") " + matched_branch_names[selection_number - 1]
     return selection_range
 
 
 def get_branch_selection(matched_branch_names):
-    selection_range = range(len(matched_branch_names))
+    selection_range = range(1, len(matched_branch_names) + 1)
 
     display_matched_branches(selection_range, matched_branch_names)
 
