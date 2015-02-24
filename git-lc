@@ -31,23 +31,28 @@ def lazy_checkout(input_branch_name):
     if len(matched_branch_names) == 1:
         branch_selection = matched_branch_names[0]
     else:
-        selection = display_available_branches(matched_branch_names) - 1
+        selection = get_branch_selection(matched_branch_names) - 1
         branch_selection = matched_branch_names[selection]
 
     subprocess.call(["git", "checkout", branch_selection])
 
 
-def display_available_branches(matched_branch_names):
-    selection_range = range(len(matched_branch_names))
-
+def display_matched_branches(selection_range, matched_branch_names):
     for i in selection_range:
         selection_counter = i + 1
         print `selection_counter` + ") " + matched_branch_names[i]
+    return selection_range
+
+
+def get_branch_selection(matched_branch_names):
+    selection_range = range(len(matched_branch_names))
+
+    display_matched_branches(selection_range, matched_branch_names)
 
     selection = int_or_none(raw_input("Given branch name matches several available branches. Please select one: "))
 
     if selection is None or selection not in selection_range:
-        selection = display_available_branches(matched_branch_names)
+        selection = get_branch_selection(matched_branch_names)
 
     return selection
 
