@@ -28,3 +28,4 @@ Your branch is up-to-date with 'origin/master'.
 - test coverage
 - leverage the GitPython library
 - installation instructions for adding this as an extension to git
+- Python 3 support
